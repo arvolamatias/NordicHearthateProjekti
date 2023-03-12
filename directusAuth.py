@@ -47,25 +47,25 @@ def loginAction():
 
 def refreshLogin(refreshToken):
     print('refreshLogin()')
-    token = refreshToken
+    refresh = refreshToken
     if needsRefresh:
         loggedIn = False
         print(REFRESH_URL + " login")
-        print(token + ' Refresh')
+
         request = requests.post(REFRESH_URL,
                                 headers={"Accept": "application/json",
                                          "Content-Type": "application/json; charset=utf-8"},
-                                json={"refresh_token": token})
+                                json={"refresh_token": refresh})
         if request.status_code == 200:
             responseJSON = request.json()
             accessToken = responseJSON["data"]["access_token"]
-            token = responseJSON["data"]["refresh_token"]
+            refresh = responseJSON["data"]["refresh_token"]
             loggedIn = True
 
 
             # after login's done, get data from API
             dataAction(loggedIn,accessToken)
-            return token
+            return refresh
         else:
             print(request.text)
 
